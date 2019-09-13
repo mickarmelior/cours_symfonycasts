@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\ArticleRepository;
+use App\Repository\CommentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -43,7 +43,7 @@ class Article
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $publishAt;
+    private $publishedAt;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -77,7 +77,7 @@ class Article
         $this->tags = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId()
     {
         return $this->id;
     }
@@ -93,6 +93,7 @@ class Article
 
         return $this;
     }
+
 
     public function getSlug(): ?string
     {
@@ -118,14 +119,14 @@ class Article
         return $this;
     }
 
-    public function getPublishAt(): ?\DateTimeInterface
+    public function getPublishedAt(): ?\DateTimeInterface
     {
-        return $this->publishAt;
+        return $this->publishedAt;
     }
 
-    public function setPublishAt(?\DateTimeInterface $publishAt): self
+    public function setPublishedAt(?\DateTimeInterface $publishedAt): self
     {
-        $this->publishAt = $publishAt;
+        $this->publishedAt = $publishedAt;
 
         return $this;
     }
@@ -154,6 +155,13 @@ class Article
         return $this;
     }
 
+    public function incrementHeartCount(): self
+    {
+        $this->heartCount = $this->heartCount + 1;
+
+        return $this;
+    }
+
     public function getImageFilename(): ?string
     {
         return $this->imageFilename;
@@ -166,14 +174,9 @@ class Article
         return $this;
     }
 
-    public function getImagePath(){
-        return 'images/' . $this->getImageFilename();
-    }
-
-    public function incrementHeartCount(): self{
-        $this->heartCount = $this->heartCount + 1;
-
-        return $this;
+    public function getImagePath()
+    {
+        return 'images/'.$this->getImageFilename();
     }
 
     /**
@@ -189,7 +192,7 @@ class Article
      */
     public function getNonDeletedComments(): Collection
     {
-        $criteria = ArticleRepository::createNonDeletedCriteria();
+        $criteria = CommentRepository::createNonDeletedCriteria();
 
         return $this->comments->matching($criteria);
     }

@@ -1,8 +1,5 @@
 <?php
-
-
 namespace App\Helper;
-
 
 use Psr\Log\LoggerInterface;
 
@@ -16,12 +13,14 @@ trait LoggerTrait
     /**
      * @required
      */
-    public function setLogger(LoggerInterface $logger){
+    public function setLogger(LoggerInterface $logger)
+    {
         $this->logger = $logger;
     }
 
-    public function logInfo(string $message, array $context = []){
-        if($this->logger){
+    private function logInfo(string $message, array $context = [])
+    {
+        if ($this->logger) {
             $this->logger->info($message, $context);
         }
     }

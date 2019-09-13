@@ -16,8 +16,8 @@ class ArticleStatsCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Returns some article stats')
-            ->addArgument('slug', InputArgument::REQUIRED, "The article's slug")
+            ->setDescription('Returns some article stats!')
+            ->addArgument('slug', InputArgument::REQUIRED, 'The article\'s slug')
             ->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format', 'text')
         ;
     }
@@ -32,22 +32,19 @@ class ArticleStatsCommand extends Command
             'hearts' => rand(10, 100),
         ];
 
-        switch($input->getOption('format')){
+        switch ($input->getOption('format')) {
             case 'text':
-                $rows =[];
-                foreach($data as $key => $val){
+                $rows = [];
+                foreach ($data as $key => $val) {
                     $rows[] = [$key, $val];
                 }
                 $io->table(['Key', 'Value'], $rows);
-
                 break;
-
             case 'json':
-                $io->write(\GuzzleHttp\json_encode($data));
+                $io->write(json_encode($data));
                 break;
-
             default:
-                throw new \Exception('What kind of crazy format is that ?!');
+                throw new \Exception('What kind of crazy format is that!?');
         }
     }
 }

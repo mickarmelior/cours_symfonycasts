@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controller;
-
 
 use App\Entity\Article;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,11 +13,12 @@ class ArticleAdminController extends AbstractController
     /**
      * @Route("/admin/article/new")
      */
-    public function new(EntityManagerInterface $em){
+    public function new(EntityManagerInterface $em)
+    {
         die('todo');
 
         return new Response(sprintf(
-            'Hiya ! New article id:#%d slug: %s',
+            'Hiya! New Article id: #%d slug: %s',
             $article->getId(),
             $article->getSlug()
         ));
