@@ -29,9 +29,10 @@ class ArticleFixtures extends BaseFixture implements DependentFixtureInterface
 
     protected function loadData(ObjectManager $manager)
     {
-        $this->createMany(Article::class, 10, function($article, $count) use ($manager){
+        $this->createMany(Article::class, 10, function ($article, $count) use ($manager) {
             $article->setTitle($this->faker->randomElement(self::$articleTitles))
-                ->setContent($articleContent = <<<EOF
+                ->setContent(
+                    $articleContent = <<<EOF
 Spicy **jalapeno bacon** ipsum dolor amet veniam shank in dolore. Ham hock nisi landjaeger cow, lorem proident [beef ribs](https://baconipsum.com/)
 aute enim veniam ut cillum pork chuck picanha. Dolore reprehenderit labore minim pork belly spare ribs cupim short 
 loin in. Elit exercitation eiusmod dolore cow **turkey** shank eu pork belly meatball non cupim.
@@ -70,7 +71,7 @@ EOF
 
             /** @var Tag[] $tags */
             $tags = $this->getRandomReferences(Tag::class, $this->faker->numberBetween(0, 5));
-            foreach ($tags as $tag){
+            foreach ($tags as $tag) {
                 $article->addTag($tag);
             }
         });
@@ -84,6 +85,4 @@ EOF
             TagFixture::class,
         ];
     }
-
-
 }

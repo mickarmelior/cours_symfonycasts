@@ -23,19 +23,39 @@ class CommentRepository extends ServiceEntityRepository
     /**
      * @param string|null $term
      */
-    public function getWithSearchQueryBuilder(?string $term): QueryBuilder{
+    public function getWithSearchQueryBuilder(?string $term): QueryBuilder
+    {
         $qb = $this->createQueryBuilder('c')
             ->innerJoin('c.article', 'a')
             ->addSelect('a');
 
-        if($term){
+        if ($term) {
             $qb->andWhere('c.content LIKE :term OR c.authorName LIKE :term OR a.title LIKE :term')
-                ->setParameter('term', '%'.$term.'%')
-            ;
+                ->setParameter('term', '%' . $term . '%');
         }
 
         return $qb
             ->orderBy('c.createdAt', 'DESC');
+    }
+
+    /**
+     * @param string|null $term
+     * @return Comment[]
+     */
+    public function findAllWithSearch(?string $term)
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->innerJoin('c.article', 'a')
+            ->addSelect('a');
+
+        if ($term) {
+            $qb->andWhere('c.content LIKE :term OR c.authorName LIKE :term OR a.title LIKE :term')
+                ->setParameter('term', '%' . $term . '%');
+        }
+        return $qb
+            ->orderBy('c.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 
     // /**
