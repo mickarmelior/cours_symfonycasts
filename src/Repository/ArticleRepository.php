@@ -4,9 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Article;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Criteria;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * @method Article|null find($id, $lockMode = null, $lockVersion = null)
@@ -16,7 +15,7 @@ use Doctrine\ORM\QueryBuilder;
  */
 class ArticleRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Article::class);
     }
@@ -29,16 +28,9 @@ class ArticleRepository extends ServiceEntityRepository
         return $this->addIsPublishedQueryBuilder()
             ->leftJoin('a.tags', 't')
             ->addSelect('t')
-            ->orderBy('a.publishAt', 'DESC')
+            ->orderBy('a.publishedAt', 'DESC')
             ->getQuery()
             ->getResult()
-        ;
-    }
-
-    public static function createNonDeletedCriteria(): Criteria{
-        return Criteria::create()
-            ->andWhere(Criteria::expr()->eq('isDeleted', false))
-            ->orderBy(['createdAt' => 'DESC'])
         ;
     }
 
@@ -54,14 +46,14 @@ class ArticleRepository extends ServiceEntityRepository
     }
     */
 
-    private function addIsPublishedQueryBuilder(QueryBuilder $qb = null){
+    private function addIsPublishedQueryBuilder(QueryBuilder $qb = null)
+    {
         return $this->getOrCreateQueryBuilder($qb)
-            ->andWhere('a.publishAt IS NOT NULL');
-
+            ->andWhere('a.publishedAt IS NOT NULL');
     }
 
-    private function getOrCreateQueryBuilder(QueryBuilder $qb = null){
+    private function getOrCreateQueryBuilder(QueryBuilder $qb = null)
+    {
         return $qb ?: $this->createQueryBuilder('a');
     }
-
 }

@@ -4,7 +4,14 @@
 namespace App\Controller;
 
 
-class BaseController
+use App\Entity\User;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+abstract class BaseController extends AbstractController
 {
+    protected function getUser(): User
+    {
+        return parent::getUser();
+    }
 
 }
