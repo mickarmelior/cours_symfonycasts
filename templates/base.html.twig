@@ -2,7 +2,10 @@
 <html lang="en">
 
     <head>
-        <title>{% block title %}Welcome to the SpaceBar{% endblock %}</title>
+        <title>
+            {% block title %}Welcome to the SpaceBar
+            {% endblock %}
+        </title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -20,20 +23,20 @@
                 <a href="{{ path('app_homepage', {'_switch_user': '_exit'}) }}">Exit Impersonation</a>
             </div>
         {% endif %}
-        <nav class="navbar navbar-expand-lg navbar-dark navbar-bg mb-5">
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-bg {{ app.session.flashbag.peek('success')|length > 0 ? '' : 'mb-5' }}">
             <a style="margin-left: 75px;" class="navbar-brand space-brand" href="{{ path('app_homepage') }}">The Space Bar</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav mr-auto">
-                     <li class="nav-item">
-                       <a style="color: #fff;" class="nav-link" href="#">Local Asteroids</a>
-                     </li>
-                     <li class="nav-item">
-                       <a style="color: #fff;" class="nav-link" href="#">Weather</a>
-                     </li>
-                   </ul>
+                    <li class="nav-item">
+                        <a style="color: #fff;" class="nav-link" href="#">Local Asteroids</a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="color: #fff;" class="nav-link" href="#">Weather</a>
+                    </li>
+                </ul>
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-info my-2 my-sm-0" type="submit">Search</button>
@@ -64,11 +67,21 @@
             </div>
         </nav>
 
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
         {% block body %}{% endblock %}
 
         <footer class="footer">
             <div class="container text-center">
-                <span class="text-muted">Made with <i class="fa fa-heart" style="color: red;"></i> by the guys and gals at <a href="https://knpuniversity.com">KnpUniversity</a></span>
+                <span class="text-muted">Made with
+                    <i class="fa fa-heart" style="color: red;"></i>
+                    by the guys and gals at
+                    <a href="https://knpuniversity.com">KnpUniversity</a>
+                </span>
             </div>
         </footer>
 
